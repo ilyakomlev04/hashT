@@ -9,27 +9,26 @@ void ExcludeNode(struct list_node_t *n, struct list_t *lst, int where)
         return;
     if (where == -1)
     {
+        // lst->Size--;
         if (lst->Size == 1)
         {
             // top
             lst->top = NULL;
             // back
             lst->back = NULL;
-            lst->Size--;
         }
         else if (lst->Size == 2)
         {
             lst->top = lst->back;
             lst->top->prev = NULL;
-            lst->Size--;
         }
         else if (lst->Size > 2)
         {
             struct list_node_t *topnew = lst->top->next;
             topnew->prev = NULL;
             lst->top = topnew;
-            lst->Size--;
         }
+        lst->Size--;
     }
     else if (where == -2)
     {
@@ -145,6 +144,9 @@ void list_push_front(struct list_t *lst, struct page_t *q)
         // remove last element
         pToNewListNode = list_pop_back(lst);
     }
+    // It is necessary to update curentSize because  list_pop_back may change lst
+    // !!!!!!!!!!!! it was the error
+    curentSize = lst->Size;
     if (curentSize == 0)
     {
         // top
